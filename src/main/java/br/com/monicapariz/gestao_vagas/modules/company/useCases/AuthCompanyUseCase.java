@@ -1,6 +1,7 @@
 package br.com.monicapariz.gestao_vagas.modules.company.useCases;
 
 import br.com.monicapariz.gestao_vagas.modules.company.dto.AuthCompanyDTO;
+import br.com.monicapariz.gestao_vagas.modules.company.dto.AuthCompanyResponseDTO;
 import br.com.monicapariz.gestao_vagas.modules.company.repositories.CompanyRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.security.sasl.AuthenticationException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 
 @Service
 public class AuthCompanyUseCase {
@@ -26,7 +28,7 @@ public class AuthCompanyUseCase {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public String execute(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
+    public AuthCompanyResponseDTO execute(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
 
         var company = this.companyRepository
                 .findByUsername(authCompanyDTO.getUsername())
@@ -45,13 +47,23 @@ public class AuthCompanyUseCase {
         }
 
         Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
+
+        var ExpiresAt = Instant.now()
+                .plus(Duration.ofHours(2));
+
         var token = JWT.create()
                 .withIssuer("javagas")
-                .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
                 .withSubject(company.getId().toString())
+                .withExpiresAt(ExpiresAt)
+                .withClaim("roles", Arrays.asList("COMPANY"))
                 .sign(algorithm);
 
-        return token;
+        var authCompanyResponseDTO = AuthCompanyResponseDTO.builder()
+                .accessToken(token)
+                .expires_at(ExpiresAt.toEpochMilli())
+                .build();
+
+        return authCompanyResponseDTO;
 
     }
 
