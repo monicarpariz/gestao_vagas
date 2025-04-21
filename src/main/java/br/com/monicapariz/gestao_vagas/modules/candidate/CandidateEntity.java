@@ -1,5 +1,6 @@
 package br.com.monicapariz.gestao_vagas.modules.candidate;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,17 +23,35 @@ public class CandidateEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Schema(example = "Daniel de Souza",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            description = "Nome do Candidato")
     private String name;
 
     @NotBlank
     @Pattern(regexp = "\\S+", message = "Username should not contain spaces")
+    @Schema(example = "daniel",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            description = "Username do Candidato")
     private String username;
 
     @Email(message = "Email should be valid")
+    @Schema(example = "daniel@gmail.com",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            description = "E-mail do Candidato")
     private String email;
 
     @Length(min = 6, max = 100)
+    @Schema(
+            example = "admin@1234",
+            minLength = 6, maxLength = 100,
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            description = "Senha do Candidato"
+    )
     private String password;
+    @Schema(example = "Desenvolvedor Java",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            description = "Breve descrição do Candidato")
     private String description;
     private String curriculum;
 
