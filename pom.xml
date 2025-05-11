@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>br.com.monicapariz</groupId>
 	<artifactId>gestao_vagas</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>gestao_vagas</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Gestão de Vagas</description>
 	<url/>
 	<licenses>
 		<license/>
