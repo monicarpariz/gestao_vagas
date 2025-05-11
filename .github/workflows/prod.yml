@@ -18,7 +18,7 @@ jobs:
         - name: Build Project
           run: mvn clean install
         - name: Login Docker
-          run: docker login -u "monicarpariz" -p "Mo$102132"
+          run: docker login -u monicarpariz -p Mo$102132
         - name: Build Docker Image
           run: docker build -t monicarpariz/gestao-vagas .
         - name: Push Docker Image
